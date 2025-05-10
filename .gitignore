@@ -14,3 +14,28 @@ target/
 
 # Docker
 **/Dockerfile
+
+# Build files
+target/
+
+# Maven
+/.mvn/
+/mvnw
+/mvnw.cmd
+
+# IntelliJ IDEA
+.idea/
+/*.iml
+/.idea/
+
+# Eclipse
+/.classpath
+/.project
+/.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
