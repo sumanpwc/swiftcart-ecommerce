@@ -1,0 +1,158 @@
+version: '3.8'
+
+services:
+  # Eureka Discovery Server
+  discovery-server:
+    image: openjdk:17-jdk
+    container_name: discovery-server
+    build:
+      context: ./discovery-server
+    ports:
+      - "8761:8761"
+    networks:
+      - swiftcart-net
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  # API Gateway
+  api-gateway:
+    image: openjdk:17-jdk
+    container_name: api-gateway
+    build:
+      context: ./api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - discovery-server
+    networks:
+      - swiftcart-net
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  # User Service
+  user-service:
+    image: openjdk:17-jdk
+    container_name: user-service
+    build:
+      context: ./user-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - discovery-server
+    networks:
+      - swiftcart-net
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    restart: always
+
+  # Product Service
+  product-service:
+    image: openjdk:17-jdk
+    container_name: product-service
+    build:
+      context: ./product-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - discovery-server
+    networks:
+      - swiftcart-net
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    restart: always
+
+  # Order Service
+  order-service:
+    image: openjdk:17-jdk
+    container_name: order-service
+    build:
+      context: ./order-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - discovery-server
+    networks:
+      - swiftcart-net
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    restart: always
+
+  # Inventory Service
+  inventory-service:
+    image: openjdk:17-jdk
+    container_name: inventory-service
+    build:
+      context: ./inventory-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      - discovery-server
+    networks:
+      - swiftcart-net
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    restart: always
+
+  # Payment Service
+  payment-service:
+    image: openjdk:17-jdk
+    container_name: payment-service
+    build:
+      context: ./payment-service
+    ports:
+      - "8085:8085"
+    depends_on:
+      - discovery-server
+    networks:
+      - swiftcart-net
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    restart: always
+
+  # Shipping Service
+  shipping-service:
+    image: openjdk:17-jdk
+    container_name: shipping-service
+    build:
+      context: ./shipping-service
+    ports:
+      - "8086:8086"
+    depends_on:
+      - discovery-server
+    networks:
+      - swiftcart-net
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    restart: always
+
+  # Kafka
+  kafka:
+    image: wurstmeister/kafka:latest
+    container_name: kafka
+    ports:
+      - "9093:9093"
+    environment:
+      KAFKA_ADVERTISED_LISTENER: INSIDE://kafka:9093
+      KAFKA_LISTENER: INSIDE://kafka:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL: PLAINTEXT
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_NAME_INNER: INSIDE
+      KAFKA_LISTENER_PORT: 9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL: PLAINTEXT
+    depends_on:
+      - zookeeper
+    networks:
+      - swiftcart-net
+
+  # Zookeeper (for Kafka)
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    networks:
+      - swiftcart-net
+
+networks:
+  swiftcart-net:
+    driver: bridge
