@@ -4,9 +4,8 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-import org.hibernate.annotations.TypeDef;
-
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +18,6 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
-@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class User {
 
     @Id
@@ -52,6 +50,7 @@ public class User {
 
     
     @Column(columnDefinition = "jsonb")
+    @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, Object> metadata;
 
     private LocalDateTime lastLogin;
