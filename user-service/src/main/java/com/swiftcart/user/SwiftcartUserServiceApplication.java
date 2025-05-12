@@ -9,5 +9,4 @@ public class SwiftcartUserServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SwiftcartUserServiceApplication.class, args);
 	}
-
 }
