@@ -1,4 +1,4 @@
-package com.swiftcart.user.model.dto;
+package com.swiftcart.user.dto;
 
 public class UserDto {
 
