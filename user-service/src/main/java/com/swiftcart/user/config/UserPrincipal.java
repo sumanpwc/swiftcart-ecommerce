@@ -1,88 +1,71 @@
 package com.swiftcart.user.config;
 
 import java.util.Collection;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.swiftcart.user.model.User;
 
 public class UserPrincipal implements UserDetails {
 
-	/**
+    /**
 	 * 
 	 */
-	private static final long serialVersionUID = -8355240284815939619L;
-
-	private Long id;
-	private String email;
-	private String fullname;
+	private static final long serialVersionUID = 8922995032734070675L;
 	
-	public UserPrincipal(Long id, String email, String fullname) {
-		super();
-		this.id = id;
-		this.email = email;
-		this.fullname = fullname;
-	}
+	private final User user;
+    
+    public UserPrincipal(User user) {
+    	this.user = user;
+    }
+    
+    public UUID getId() {
+        return user.getId();
+    }
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+    public String getFullName() {
+        return user.getFullName();
+    }
+    
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return user.getUserRoles().stream()
+            .map(ur -> new SimpleGrantedAuthority(ur.getRole().getName()))
+            .collect(Collectors.toList());
+    }
+    
 	@Override
 	public String getPassword() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Long getId() {
-		return id;
+	@Override
+	public boolean isAccountNonExpired() {
+		return true; // can be extended
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	@Override
+	public boolean isAccountNonLocked() {
+		return user.getIsActive(); // deactivate = lock
 	}
 
-	public String getEmail() {
-		return email;
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true; // extend for password expire logic
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	@Override
+	public boolean isEnabled() {
+		return user.getIsActive();
 	}
-
-	public String getFullname() {
-		return fullname;
-	}
-
-	public void setFullname(String fullname) {
-		this.fullname = fullname;
-	}
-	
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }
