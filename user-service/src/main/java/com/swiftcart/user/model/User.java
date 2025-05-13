@@ -57,7 +57,7 @@ public class User {
 
     private String profilePicture;
 
-    @Type(JsonType.class) // Use Hibernate Types library for JSON support
+    @Type(JsonType.class) 
     @Column(columnDefinition = "jsonb")
     private Map<String, Object> metadata;
     
