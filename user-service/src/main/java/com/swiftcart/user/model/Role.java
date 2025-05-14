@@ -10,7 +10,6 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "roles", schema = "user_schema")
-
 public class Role {
 
     @Id
