@@ -1,5 +1,7 @@
 package com.swiftcart.user.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +24,7 @@ import com.swiftcart.user.service.UserDetailsServiceImpl;
 @EnableWebSecurity
 public class SpringSecurity {
 
+	private static final Logger log = LoggerFactory.getLogger(SpringSecurity.class);
 	@Autowired
 	private JwtFilter jwtFilter;
 	
@@ -32,7 +35,7 @@ public class SpringSecurity {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(authorize ->
-						authorize.requestMatchers("/admin/***").hasRole("ADMIN")
+						authorize.requestMatchers("/api/v1/admin/***").hasRole("ADMIN")
 						.requestMatchers("/user/***").authenticated()
 						.anyRequest().permitAll()
 						)
@@ -49,6 +52,7 @@ public class SpringSecurity {
 	
 	@Bean
 	AuthenticationManager authenticationManager(PasswordEncoder passwordEncoder, UserDetailsServiceImpl userDetailsServiceImpl ) {
+		log.info("====================================" + "Creating AuthenticationManager Bean");
 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
 		authenticationProvider.setUserDetailsService(userDetailsServiceImpl);
 		authenticationProvider.setPasswordEncoder(passwordEncoder);

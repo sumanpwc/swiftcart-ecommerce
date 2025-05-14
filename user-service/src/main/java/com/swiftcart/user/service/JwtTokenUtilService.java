@@ -19,6 +19,9 @@ import io.jsonwebtoken.security.Keys;
 public class JwtTokenUtilService {
 	private final String secretKey = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347438";
 
+	// Token validity duration: 5 minutes (in milliseconds)
+    private final long jwtExpirationMs = 1000 * 60 * 5;
+    
 	public String generateToken(String userName) {
 		Map<String, Object> claims = new HashMap<>();
 		return createToken(claims, userName);
@@ -30,7 +33,7 @@ public class JwtTokenUtilService {
                 .setClaims(claims)
                 .setSubject(userName)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5)) // Token valid for 30 minutes
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs)) // Token valid for 30 minutes
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -75,6 +78,11 @@ public class JwtTokenUtilService {
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+    
+    // Public method to get expiration duration (in seconds) for the API response
+    public long getExpirationDurationSeconds() {
+        return jwtExpirationMs / 1000;
     }
 
 }

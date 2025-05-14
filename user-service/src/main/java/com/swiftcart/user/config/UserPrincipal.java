@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +18,8 @@ public class UserPrincipal implements UserDetails {
 	 * 
 	 */
 	private static final long serialVersionUID = 8922995032734070675L;
+	
+	private static final Logger log = LoggerFactory.getLogger(UserPrincipal.class);	
 	
 	private final User user;
     
@@ -33,6 +37,7 @@ public class UserPrincipal implements UserDetails {
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+    	log.info("==================================================="+ user.getUserRoles().toString());
         return user.getUserRoles().stream()
             .map(ur -> new SimpleGrantedAuthority(ur.getRole().getName()))
             .collect(Collectors.toList());
@@ -40,13 +45,11 @@ public class UserPrincipal implements UserDetails {
     
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
+		return user.getPassword();
 	}
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
+		return user.getEmail();
 	}
 
 	@Override

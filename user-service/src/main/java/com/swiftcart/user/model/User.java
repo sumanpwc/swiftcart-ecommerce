@@ -22,7 +22,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
-
 @Entity
 @Table(name = "users", schema = "user_schema")
 public class User {
@@ -30,7 +29,6 @@ public class User {
     @Id
     @GeneratedValue(generator = "UUID")
     private UUID id;
-
 
     @Column(nullable = false, unique = true)
     private String email;
