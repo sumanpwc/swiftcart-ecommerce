@@ -1,5 +1,6 @@
 package com.swiftcart.user.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,10 +19,16 @@ public class UserService {
 
 	// Fetch all users records
 	
-	public List<User> getAllUsers(){
+	public List<UserResponse> getAllUsers(){
 		List<User> users = userRepository.findAll();
 		if(users != null) {
-			return users;
+			List<UserResponse> userResponses = new ArrayList<>();
+			
+			for (User user : users) {
+				UserResponse userResponse = convertToUserResponseDTO(user);
+				userResponses.add(userResponse);
+			}
+			return userResponses;
 		}
 		return null;
 	}
@@ -47,5 +54,11 @@ public class UserService {
 	    		user.getCreatedAt(),
 	    		user.getUpdatedAt(),
 	    		roleNames);
+	}
+
+	public List<UserResponse> getFilteredUsers(String role, Boolean isEmailVerified, Boolean isPhoneVerified,
+			Boolean isActive) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
