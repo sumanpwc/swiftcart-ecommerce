@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.swiftcart.user.dto.UserApiResponse;
 import com.swiftcart.user.service.UserService;
 
 @RestController
@@ -38,8 +39,10 @@ public class UserController {
     @GetMapping("/me")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> viewProfile(){
-    	
-    	return new ResponseEntity<> (HttpStatus.OK);
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	String email = authentication.getName();
+    	UserApiResponse userApiResponse = userService.viewProfile(email);
+    	return new ResponseEntity<> (userApiResponse, HttpStatus.OK);
     }
     
     // Update Profile

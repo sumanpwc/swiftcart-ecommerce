@@ -2,9 +2,9 @@ package com.swiftcart.user.dto;
 
 import java.util.List;
 
-public class FilteredUserListResponse {
+public class FilteredUserListApiResponse {
 
-    private String status;
+	private String status;
     private String message;
     private String timestamp;
     private String requestId;
@@ -109,16 +109,16 @@ public class FilteredUserListResponse {
 
     public static class Data {
         private List<UserResponse> users;
-        private int total;
+        private int count;
         // Constructors, Getters, Setters
         
         public Data() {
         	super();
 		}
-		public Data(List<UserResponse> users, int total) {
+		public Data(List<UserResponse> users, int count) {
 			super();
 			this.users = users;
-			this.total = total;
+			this.count = count;
 		}
 		public List<UserResponse> getUsers() {
 			return users;
@@ -126,21 +126,21 @@ public class FilteredUserListResponse {
 		public void setUsers(List<UserResponse> users) {
 			this.users = users;
 		}
-		public int getTotal() {
-			return total;
+		public int getCount() {
+			return count;
 		}
-		public void setTotal(int total) {
-			this.total = total;
+		public void setCount(int count) {
+			this.count = count;
 		}
     }
 
     // Constructors, Getters, Setters
     
-    public FilteredUserListResponse() {
+    public FilteredUserListApiResponse() {
 		super();
 	}
 
-	public FilteredUserListResponse(String status, String message, String timestamp, String requestId,
+	public FilteredUserListApiResponse(String status, String message, String timestamp, String requestId,
 			FilterParams filters, Pagination pagination, Data data) {
 		super();
 		this.status = status;
