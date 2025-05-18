@@ -1,7 +1,5 @@
 package com.swiftcart.user.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.swiftcart.user.dto.UserResponse;
+import com.swiftcart.user.dto.FilteredUserListResponse;
 import com.swiftcart.user.service.UserService;
 
 @RestController
@@ -26,8 +24,8 @@ public class AdminController {
 			@RequestParam(value = "isEmailVerified", required = false) Boolean isEmailVerified,
 			@RequestParam(value = "isPhoneVerified", required = false) Boolean isPhoneVerified,
 			@RequestParam(value = "isActive", required = false) Boolean isActive){
-
-		List<UserResponse> filteredUserResponses = userService.getFilteredUsers(role, isEmailVerified, isPhoneVerified, isActive);
-		return new ResponseEntity<> (filteredUserResponses, HttpStatus.OK);
+		
+		FilteredUserListResponse response = userService.getFilteredUsers(role, isEmailVerified, isPhoneVerified, isActive);
+		return new ResponseEntity<> (response, HttpStatus.OK);
 	}
 }
