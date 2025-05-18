@@ -66,7 +66,7 @@ public class PublicController {
 			log.info("=================Public Controller 4===================" + userPrincipal.getUsername());
 			
 			String jwt = jwtTokenUtilService.generateToken(userPrincipal.getUsername());
-			long expiresIn = jwtTokenUtilService.getExpirationDurationSeconds();
+			String expiresIn = jwtTokenUtilService.getExpirationDurationSeconds() + "Seconds (s)";
 			
 			return new ResponseEntity<> (new JwtResponse(jwt, expiresIn), HttpStatus.OK);
 		}

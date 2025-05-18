@@ -2,8 +2,12 @@ package com.swiftcart.user.model;
 
 import java.io.Serializable;
 import java.util.UUID;
+
+import jakarta.persistence.Embeddable;
+
 import java.util.Objects;
 
+@Embeddable
 public class UserRoleId implements Serializable {
     /**
 	 * 
