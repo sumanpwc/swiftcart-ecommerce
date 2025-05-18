@@ -3,10 +3,10 @@ package com.swiftcart.user.dto;
 public class JwtResponse {
     private String accessToken;
     private String tokenType = "Bearer";
-    private long expiresIn;
+    private String expiresIn;
 
     // Constructors
-    public JwtResponse(String accessToken, long expiresIn) {
+    public JwtResponse(String accessToken, String expiresIn) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
     }
@@ -28,11 +28,11 @@ public class JwtResponse {
         this.tokenType = tokenType;
     }
 
-    public long getExpiresIn() {
+    public String getExpiresIn() {
         return expiresIn;
     }
 
-    public void setExpiresIn(long expiresIn) {
+    public void setExpiresIn(String expiresIn) {
         this.expiresIn = expiresIn;
     }
 }
