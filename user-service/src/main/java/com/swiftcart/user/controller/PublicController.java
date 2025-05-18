@@ -79,8 +79,20 @@ public class PublicController {
 	
 	@PostMapping("/api/v1/auth/token/refresh")
 	public ResponseEntity<?> refreshToken(@RequestBody UserRequest userRequest){
-		
-		return new ResponseEntity<>(HttpStatus.OK);
+		try {
+			//authenticationManager.authenticate(
+				//	new UsernamePasswordAuthenticationToken(userRequest.getEmail(), userRequest.getPassword()));
+			
+			UserPrincipal userPrincipal = (UserPrincipal) userDetailsServiceImpl.loadUserByUsername(userRequest.getEmail());
+			String jwt = jwtTokenUtilService.generateToken(userPrincipal.getUsername());
+			String expiresIn = jwtTokenUtilService.getExpirationDurationSeconds() + " Seconds (s)";
+			
+			return new ResponseEntity<>(new JwtResponse(jwt, expiresIn), HttpStatus.OK);			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<> ("Incorrect Email and Password", HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	// OAuth2 login (Google, GitHub, etc.)
