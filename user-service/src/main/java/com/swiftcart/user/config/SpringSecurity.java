@@ -35,9 +35,10 @@ public class SpringSecurity {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(authorize ->
-						authorize.requestMatchers("/api/v1/admin/***").hasRole("ADMIN")
-						.requestMatchers("/user/***").authenticated()
-						.anyRequest().permitAll()
+						authorize.requestMatchers("/api/v1/auth/**" , "/oauth2/**").permitAll()
+						.requestMatchers("/api/v1/users/**").hasAnyRole("ADMIN" , "USER")
+						.requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+						.anyRequest().authenticated()
 						)
                 .sessionManagement(sess -> sess
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // No sessions

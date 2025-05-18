@@ -21,6 +21,16 @@ public class UserService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	
+	// Find a user by Email
+	
+	public UserResponse findUserByEmail(String email) {
+		Optional<User> optionUser = userRepository.findByEmail(email);
+		User user = optionUser.get();
+		
+		return convertToUserResponseDTO(user);	
+	}
 
 	// Fetch all users records
 	
@@ -95,4 +105,6 @@ public class UserService {
         
         return response;
 	}
+	
+	
 }
