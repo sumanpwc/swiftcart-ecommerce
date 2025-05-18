@@ -66,7 +66,7 @@ public class PublicController {
 			log.info("=================Public Controller 4===================" + userPrincipal.getUsername());
 			
 			String jwt = jwtTokenUtilService.generateToken(userPrincipal.getUsername());
-			String expiresIn = jwtTokenUtilService.getExpirationDurationSeconds() + "Seconds (s)";
+			String expiresIn = jwtTokenUtilService.getExpirationDurationSeconds() + " Seconds (s)";
 			
 			return new ResponseEntity<> (new JwtResponse(jwt, expiresIn), HttpStatus.OK);
 		}
@@ -81,6 +81,7 @@ public class PublicController {
 	public ResponseEntity<?> getUser(@RequestBody UserRequest userRequest) {
 	    Optional<User> user = userRepository.findByEmail(userRequest.getEmail());
 	    UserResponse userResponse = userService.convertToUserResponseDTO(user.get());
+	    
 	    return new ResponseEntity<>(userResponse, HttpStatus.OK);
 	}
 }
