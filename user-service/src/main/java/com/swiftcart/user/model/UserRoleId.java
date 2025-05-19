@@ -16,7 +16,7 @@ public class UserRoleId implements Serializable {
 	private UUID userId;
     private UUID roleId;
     
-    UserRoleId() {
+    public UserRoleId() {
 		super();
 	}    
     
