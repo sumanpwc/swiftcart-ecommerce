@@ -37,4 +37,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 		                              @Param("isEmailVerified") Boolean isEmailVerified,
 		                              @Param("isPhoneVerified") Boolean isPhoneVerified,
 		                              @Param("isActive") Boolean isActive);
+	
+	// Check if the User is exist or not !
+	
+	boolean existsByEmail(@Param("email") String email);
 }

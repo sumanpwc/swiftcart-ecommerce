@@ -22,7 +22,7 @@ public class UserRole {
     @MapsId("roleId")
     private Role role;
     
-    UserRole() {
+    public UserRole() {
 		super();
 	}
 
@@ -36,7 +36,11 @@ public class UserRole {
 	public UserRoleId getId() {
 		return id;
 	}
-	
+		
+	public void setId(UserRoleId id) {
+		this.id = id;
+	}
+
 	public User getUser() {
 		return user;
 	}

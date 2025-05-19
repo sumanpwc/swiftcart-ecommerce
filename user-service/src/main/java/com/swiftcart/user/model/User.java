@@ -18,7 +18,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PreUpdate;
@@ -30,7 +29,6 @@ import jakarta.persistence.Table;
 public class User {
 
     @Id
-    @GeneratedValue(generator = "UUID")
     private UUID id;
 
     @Column(nullable = false, unique = true)
@@ -104,6 +102,10 @@ public class User {
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.userRoles = userRoles;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
 	}
 
 	public UUID getId() {

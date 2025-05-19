@@ -40,7 +40,7 @@ public class PublicController {
 	// Register New User
 	
 	@PostMapping("/api/v1/auth/register")
-	public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest){
+	public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest){
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
