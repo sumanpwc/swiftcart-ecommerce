@@ -5,6 +5,7 @@ import java.util.List;
 public class FilteredUserListApiResponse {
 
 	private String status;
+	private int code;
     private String message;
     private String timestamp;
     private String requestId;
@@ -108,23 +109,23 @@ public class FilteredUserListApiResponse {
     }
 
     public static class Data {
-        private List<UserResponse> users;
+        private List<UserResponse> payload;
         private int count;
         // Constructors, Getters, Setters
         
         public Data() {
         	super();
 		}
-		public Data(List<UserResponse> users, int count) {
+		public Data(List<UserResponse> payload, int count) {
 			super();
-			this.users = users;
+			this.payload = payload;
 			this.count = count;
 		}
-		public List<UserResponse> getUsers() {
-			return users;
+		public List<UserResponse> getPayload() {
+			return payload;
 		}
-		public void setUsers(List<UserResponse> users) {
-			this.users = users;
+		public void setPayload(List<UserResponse> payload) {
+			this.payload = payload;
 		}
 		public int getCount() {
 			return count;
@@ -140,16 +141,25 @@ public class FilteredUserListApiResponse {
 		super();
 	}
 
-	public FilteredUserListApiResponse(String status, String message, String timestamp, String requestId,
+	public FilteredUserListApiResponse(String status, int code, String message, String timestamp, String requestId,
 			FilterParams filters, Pagination pagination, Data data) {
 		super();
 		this.status = status;
+		this.code = code;
 		this.message = message;
 		this.timestamp = timestamp;
 		this.requestId = requestId;
 		this.filters = filters;
 		this.pagination = pagination;
 		this.data = data;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
 	}
 
 	public String getStatus() {

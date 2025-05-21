@@ -10,8 +10,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.swiftcart.commom.dto.ApiResponse;
+import com.swiftcart.commom.dto.ResponseFactory;
 import com.swiftcart.user.dto.FilteredUserListApiResponse;
-import com.swiftcart.user.dto.UserApiResponse;
 import com.swiftcart.user.dto.UserResponse;
 import com.swiftcart.user.model.User;
 import com.swiftcart.user.repository.UserRepository;
@@ -22,7 +23,7 @@ import jakarta.persistence.EntityNotFoundException;
 public class AdminService {
 
 	@Autowired
-	UserRepository userRepository;
+	private UserRepository userRepository;
 	
 	// Service To Get All Filtered User
 	
@@ -40,6 +41,7 @@ public class AdminService {
 		// Build the response
 		FilteredUserListApiResponse response = new FilteredUserListApiResponse();
         response.setStatus("success");
+        response.setCode(200);
         response.setMessage("Filtered user list retrieved successfully.");
         response.setTimestamp(OffsetDateTime.now().toString());
         response.setRequestId(UUID.randomUUID().toString());
@@ -52,7 +54,7 @@ public class AdminService {
         response.setFilters(filterParams);
 
         FilteredUserListApiResponse.Data data = new FilteredUserListApiResponse.Data();
-        data.setUsers(userResponses);
+        data.setPayload(userResponses);
         data.setCount(userResponses.size());
         response.setData(data);
         
@@ -84,26 +86,18 @@ public class AdminService {
 
 	// Service To Get User By Id
 	
-	public UserApiResponse getUserById(UUID id) {
+	public ApiResponse<UserResponse> getUserById(UUID id) {
 		User user = userRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("User with ID " + id + " not found."));
 		
 		UserResponse userResponse = convertToUserResponseDTO(user);
 		
 		// Build the response
-		UserApiResponse response = new UserApiResponse();
-		response.setStatus("success");
-		response.setMessage("User retrieved successfully.");
-		response.setTimestamp(OffsetDateTime.now().toString());
-		response.setRequestId(UUID.randomUUID().toString());
-		
-		UserApiResponse.Data data = new UserApiResponse.Data();
-		data.setUser(userResponse);
-		data.setCount(1);
-		
-		response.setData(data);
-		
-		return response;
+		return ResponseFactory.success(
+				"User retrieved successfully.", 
+				userResponse, 
+				1, 
+				UUID.randomUUID().toString());
 	}
 	
 	// Service To Delete User By Id

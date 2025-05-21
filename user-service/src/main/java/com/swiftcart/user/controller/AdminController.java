@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.swiftcart.commom.dto.ApiResponse;
 import com.swiftcart.user.dto.FilteredUserListApiResponse;
-import com.swiftcart.user.dto.UserApiResponse;
+import com.swiftcart.user.dto.UserResponse;
 import com.swiftcart.user.service.AdminService;
 
 @RestController
@@ -43,8 +44,8 @@ public class AdminController {
 	@GetMapping("/users/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> getUserByID(@PathVariable("id") UUID id){
-		UserApiResponse userApiResponse = adminService.getUserById(id);
-		return new ResponseEntity<> (userApiResponse, HttpStatus.OK); 
+		ApiResponse<UserResponse> response = adminService.getUserById(id);
+		return new ResponseEntity<> (response, HttpStatus.OK); 
 	}
 	
 	// Delete User By Id
