@@ -19,13 +19,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class JwtFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
 	@Autowired
-	JwtTokenUtilService jwtTokenUtilService;
+	private JwtTokenUtilService jwtTokenUtilService;
 	
 	@Autowired
-	UserDetailsServiceImpl userDetailsServiceImpl;
+	private UserDetailsServiceImpl userDetailsServiceImpl;
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -36,7 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
 		String username = null;
 		
 		// Check if the header starts with "Bearer "
-		if (authHeader != null && authHeader.startsWith("Bearer")) {
+		if (authHeader != null && authHeader.startsWith("Bearer ")) {
 			token = authHeader.substring(7);
 			username = jwtTokenUtilService.extractUsername(token);
 		}
@@ -59,4 +59,5 @@ public class JwtFilter extends OncePerRequestFilter {
         // Continue the filter chain
         filterChain.doFilter(request, response);
 	}
+
 }

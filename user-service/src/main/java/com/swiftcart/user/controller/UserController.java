@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.swiftcart.user.dto.UserApiResponse;
+import com.swiftcart.commom.dto.ApiResponse;
+import com.swiftcart.user.dto.UserResponse;
 import com.swiftcart.user.service.UserService;
 
 @RestController
@@ -41,8 +42,8 @@ public class UserController {
     public ResponseEntity<?> viewProfile(){
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     	String email = authentication.getName();
-    	UserApiResponse userApiResponse = userService.viewProfile(email);
-    	return new ResponseEntity<> (userApiResponse, HttpStatus.OK);
+    	ApiResponse<UserResponse> response = userService.viewProfile(email);
+    	return new ResponseEntity<> (response, HttpStatus.OK);
     }
     
     // Update Profile

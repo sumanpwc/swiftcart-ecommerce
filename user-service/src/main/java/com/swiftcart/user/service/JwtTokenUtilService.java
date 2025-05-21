@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +20,14 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtTokenUtilService {
-	private final String secretKey = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347438";
 
-	// Token validity duration: 5 minutes (in milliseconds)
-    private final long jwtExpirationMs = 1000 * 60 * 5;
+	private static final Logger log = LoggerFactory.getLogger(JwtTokenUtilService.class);
+	
+	@Value("${jwt.secret}")
+    private String secretKey;
+	
+	@Value("${jwt.expiration-ms}")
+    private long jwtExpirationMs;
     
 	public String generateToken(String userName) {
 		Map<String, Object> claims = new HashMap<>();
@@ -29,9 +36,13 @@ public class JwtTokenUtilService {
 	
 	// Create a JWT token with specified claims and subject (user name)
     private String createToken(Map<String, Object> claims, String userName) {
+    	
+    	log.info("==========Jwt Expiration ================" +jwtExpirationMs);
+    	
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userName)
+                .setIssuer("swiftcart")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs)) // Token valid for 30 minutes
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
@@ -40,6 +51,7 @@ public class JwtTokenUtilService {
     
     // Get the signing key for JWT token
     private Key getSignKey() {
+    	log.info("==========Secrect Key================" +secretKey);
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
@@ -48,6 +60,7 @@ public class JwtTokenUtilService {
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
+    
     
     // Extract a claim from the token
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -84,5 +97,4 @@ public class JwtTokenUtilService {
     public long getExpirationDurationSeconds() {
         return jwtExpirationMs / 1000;
     }
-
 }

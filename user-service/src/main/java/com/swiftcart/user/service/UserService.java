@@ -1,6 +1,5 @@
 package com.swiftcart.user.service;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -9,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import com.swiftcart.user.dto.UserApiResponse;
+import com.swiftcart.commom.dto.ApiResponse;
+import com.swiftcart.commom.dto.ResponseFactory;
 import com.swiftcart.user.dto.UserResponse;
 import com.swiftcart.user.model.User;
 import com.swiftcart.user.repository.UserRepository;
@@ -54,26 +54,18 @@ public class UserService {
 	
 	// View Profile
 	
-	public UserApiResponse viewProfile(String email) {
+	public ApiResponse<UserResponse> viewProfile(String email) {
 		User user = userRepository.findByEmail(email)
 				.orElseThrow(() -> new UsernameNotFoundException("User Not Exist"));
 				
 		UserResponse userResponse = convertToUserResponseDTO(user);
 		
 		// Build the response
-		UserApiResponse response = new UserApiResponse();
-		response.setStatus("success");
-		response.setMessage("User retrieved successfully.");
-		response.setTimestamp(OffsetDateTime.now().toString());
-		response.setRequestId(UUID.randomUUID().toString());
-		
-		UserApiResponse.Data data = new UserApiResponse.Data();
-		data.setUser(userResponse);
-		data.setCount(1);
-		
-		response.setData(data);
-		
-		return response;	
+		return ResponseFactory.success(
+				"User retrieved successfully.", 
+				userResponse, 
+				1, 
+				UUID.randomUUID().toString());	
 	}
 
 }

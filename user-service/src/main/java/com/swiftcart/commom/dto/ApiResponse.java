@@ -1,33 +1,33 @@
-package com.swiftcart.user.dto;
+package com.swiftcart.commom.dto;
 
-public class UserApiResponse {
-	
+public class ApiResponse<T> {
 	private String status;
-    private String message;
-    private String timestamp;
-    private String requestId;
-    private Data data;
-
-    public static class Data {
-    	private UserResponse user;
-    	private int count;
-    	
-    	public Data() {
+	private int code;
+	private String message;
+	private String timestamp;
+	private String requestId;
+	private Data<T> data;
+	
+	public static class Data<T>{
+		private T payload;
+		private int count;
+		
+		public Data() {
 			super();
 		}
 
-		public Data(UserResponse user, int count) {
+		public Data(T payload, int count) {
 			super();
-			this.user = user;
+			this.payload = payload;
 			this.count = count;
 		}
 
-		public UserResponse getUser() {
-			return user;
+		public T getPayload() {
+			return payload;
 		}
 
-		public void setUser(UserResponse user) {
-			this.user = user;
+		public void setPayload(T payload) {
+			this.payload = payload;
 		}
 
 		public int getCount() {
@@ -37,15 +37,16 @@ public class UserApiResponse {
 		public void setCount(int count) {
 			this.count = count;
 		}
-    }
-    
-    public UserApiResponse() {
+	}
+	
+	public ApiResponse() {
 		super();
 	}
 
-	public UserApiResponse(String status, String message, String timestamp, String requestId, Data data) {
+	public ApiResponse(String status, int code, String message, String timestamp, String requestId, Data<T> data) {
 		super();
 		this.status = status;
+		this.code = code;
 		this.message = message;
 		this.timestamp = timestamp;
 		this.requestId = requestId;
@@ -58,6 +59,14 @@ public class UserApiResponse {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public int getCode() {
+		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
 	}
 
 	public String getMessage() {
@@ -84,11 +93,12 @@ public class UserApiResponse {
 		this.requestId = requestId;
 	}
 
-	public Data getData() {
+	public Data<T> getData() {
 		return data;
 	}
 
-	public void setData(Data data) {
+	public void setData(Data<T> data) {
 		this.data = data;
 	}
+	
 }
